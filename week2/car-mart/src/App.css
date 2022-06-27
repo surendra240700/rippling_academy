@@ -1,0 +1,60 @@
+.App {
+  text-align: center;
+  min-height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* justify-content: center; */
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+.App-header {
+  display: flex;
+  flex-direction: column;
+}
+
+.List {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-evenly;
+  flex-wrap:wrap;
+  margin:0 auto;
+  row-gap: 1rem;
+}
+
+.Car {
+  min-width: 30%;
+  min-height: 20%;
+  max-width: 30%;
+  max-height: 20%;
+  border-style: solid;
+  padding: 1em;
+}
+
+.carImage {
+  flex-grow: 1;
+  width: 100%;
+}
+
+.yearFilter {
+  display: flex;
+  width: 100%;
+  flex-direction: row;
+  justify-content: space-evenly;
+  row-gap: 10rem;
+}
+
+.year {
+  padding: 0.5rem;
+  cursor: pointer;
+  background-color: cadetblue;
+  border-radius: 20%;
+  margin: 20px;
+}
+/* .year:hover {
+  background-color: greenyellow;
+} */
+
+.selected {
+  background-color: goldenrod;
+}
