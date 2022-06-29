@@ -7,7 +7,7 @@ var score = 0;
 var scorer,timer;
 var min_moles = 1;
 var max_moles = 2;
-var curr_moles = 0;
+var currMoles = 0;
 var m=3,n=2;
 var timerUpdater,moleCaller,game;
 var username = null;
@@ -57,7 +57,7 @@ function gameOver() {
   timeUp = true;
   // moles.forEach(hole => hole.removeEventListener('click', bonk));
   // holes.forEach(hole => hole.classList.remove('up'));
-  curr_moles = 0;
+  currMoles = 0;
   holes.forEach(hole => hole.remove());
   moles.forEach(mole => mole.remove());
   if(!updated)
@@ -99,15 +99,15 @@ function randomHole(holes) {
 }
 
 function peep() {
-  if(curr_moles>=max_moles)
+  if(currMoles>=max_moles)
     return;
   const time = randomIntFromInterval(300, 700);
   const hole = randomHole(holes);
-  curr_moles++;
+  currMoles++;
   hole.classList.add('up');
   setTimeout(() => {
     hole.classList.remove('up');
-    if (!timeUp) {curr_moles--;}
+    if (!timeUp) {currMoles--;}
   }, time);
 }
 
