@@ -8,7 +8,7 @@ function generateRandomColor(){
 }
 
 function colorChange(){
-    circles = document.querySelectorAll('.circle');
+    let circles = document.querySelectorAll('.circle');
     let color = generateRandomColor();
     circles.forEach(circle => circle.style.backgroundColor = color);
 }
