@@ -11,7 +11,7 @@ var curr_moles = 0;
 var m=3,n=2;
 var timerUpdater,moleCaller,game;
 var username = null;
-var hiscores, scoreList;
+var highScores, scoreList;
 var updated = false;
 function updateTime() {
   document.getElementById('timer').innerHTML = timeLeft;
@@ -22,29 +22,29 @@ function randomIntFromInterval(min, max) {
 }
 
 function populateTable() {
-  // console.log(hiscores);
-  if(hiscores==undefined)
+  // console.log(highScores);
+  if(highScores==undefined)
     return;
-  scoreList.innerHTML = hiscores.map((row) => {
+  scoreList.innerHTML = highScores.map((row) => {
     return `<tr><td>${row.username}</td><td>${row.score}</tr>`;
   }).join('');
 }
 
 function checkScore() {
   let worstScore = 0;
-  if (hiscores.length > 4) {
-    worstScore = hiscores[hiscores.length - 1].score;
+  if (highScores.length > 4) {
+    worstScore = highScores[highScores.length - 1].score;
   }
   if (score > worstScore) {
-    hiscores.push({score, username});
-    hiscores.sort((a, b) => a.score > b.score ? -1 : 1);
+    highScores.push({score, username});
+    highScores.sort((a, b) => a.score > b.score ? -1 : 1);
   }
-  if (hiscores.length > 5) {
-    hiscores.pop();
+  if (highScores.length > 5) {
+    highScores.pop();
   }
   // populateTable();
-  localStorage.setItem('hiscores', JSON.stringify(hiscores));
-  console.log(hiscores);
+  localStorage.setItem('highScores', JSON.stringify(highScores));
+  console.log(highScores);
 }
 
 function gameOver() {
@@ -125,7 +125,7 @@ function makeGrid(m,n){
 
 function startGame() {
   // username = document.getElementById
-  hiscores = JSON.parse(localStorage.getItem('hiscores')) || [];
+  highScores = JSON.parse(localStorage.getItem('highScores')) || [];
   username = document.getElementById('username').value;
   if(username.trim()==''){
     alert("Please enter your name");
