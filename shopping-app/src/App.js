@@ -4,14 +4,16 @@ import { BrowserRouter as Router,Routes, Route, Link } from 'react-router-dom';
 // import ThemeContext from './context/themeContext';
 import Home from './component/home';
 import Cart from './component/cart';
+import cartContext from './component/context';
 import './App.css';
 
 
-
-
 function App() {
+  const cart = useState([]);
+
   return (
     // <ThemeContext.Provider value={'dark'}>
+    <cartContext.Provider value={cart}>
       <Router>
         <div className='App'>
           {/* <Navbar> */}
@@ -21,7 +23,7 @@ function App() {
               <Link to="/">Home</Link>
             </li>
             <li>
-              <Link to="/cart">About Us</Link>
+              <Link to="/cart">cart</Link>
             </li>
             </ul>
           <Routes>
@@ -32,7 +34,7 @@ function App() {
           </div>
         </div>
       </Router>
-  // </ThemeContext.Provider>
+    </cartContext.Provider>
 
 );
 }
