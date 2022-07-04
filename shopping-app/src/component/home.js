@@ -91,19 +91,19 @@ function Home (){
     const handleCategoryChange = (e) => {
         setCategory(e.value);
     }
-    const handleMinPriceChange = (e) => {
-        let val = parseFloat(e.target.value)
-        if(val<=0){
+
+    const handlePriceChange = (event) => {
+        event.preventDefault();
+        if(!event.isTrusted)
             return;
+        let minVal = parseFloat(event.target[0].value);
+        let maxVal = parseFloat(event.target[1].value);
+        if(minVal>0){
+            setMinPrice(minVal);
         }
-        setMinPrice(val);
-    }
-    const handleMaxPriceChange = (e) => {
-        let val = parseFloat(e.target.value)
-        if(val<=0){
-            return;
+        if(maxVal>0){
+            setMaxPrice(maxVal);
         }
-        setMaxPrice(val);
     }
 
     const handleSortChange = (e) => {
@@ -152,10 +152,12 @@ function Home (){
                <Dropdown classname='dropDown sortFilter' options={categories} onChange={(e) => handleCategoryChange(e)} value={categories[0]}/>
             </div>
             <div>
-                <label>Min. Price<input type="number" placeholder='0' onChange={(e) => handleMinPriceChange(e)}></input></label>
-            </div>
-            <div>
-                <label>Max. Price<input type="number" placeholder='0' onChange={(e) => handleMaxPriceChange(e)}></input></label>
+            <form onSubmit={handlePriceChange}>
+                <label>Min.<input type="number" placeholder='0'></input></label>
+                <label>Max.<input type="number" placeholder='0'></input></label>
+                <input type="submit" value="Apply" />
+            </form>
+
             </div>
         </div>
         <div className='List'>

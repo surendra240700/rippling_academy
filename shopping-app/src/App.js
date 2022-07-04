@@ -26,7 +26,7 @@ function App() {
               </li>
               <li>
                 <Link to="/cart">cart </Link>
-                <span>{'('}{cartCount[0]}{')'}</span>
+                <sup>{cartCount[0]}</sup>
               </li>
             </ul>
           <Routes>
