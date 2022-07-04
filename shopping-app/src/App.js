@@ -22,10 +22,11 @@ function App() {
           <div className='header'>
             <ul className='navbar'>
               <li>
-                <Link to="/">Home</Link>
+                <Link to="/">SHOP</Link>
               </li>
               <li>
-                <Link to="/cart">cart {'('}{cartCount[0]}{')'}</Link>
+                <Link to="/cart">cart </Link>
+                <span>{'('}{cartCount[0]}{')'}</span>
               </li>
             </ul>
           <Routes>
