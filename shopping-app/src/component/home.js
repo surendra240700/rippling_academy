@@ -152,7 +152,7 @@ function Home (){
                <Dropdown classname='dropDown sortFilter' options={categories} onChange={(e) => handleCategoryChange(e)} value={categories[0]}/>
             </div>
             <div>
-            <form onSubmit={handlePriceChange}>
+            <form className='formFilter' onSubmit={handlePriceChange}>
                 <label>Min.<input type="number" placeholder='0'></input></label>
                 <label>Max.<input type="number" placeholder='0'></input></label>
                 <input type="submit" value="Apply" />

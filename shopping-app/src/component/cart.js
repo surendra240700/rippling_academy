@@ -9,14 +9,16 @@ function CartItem(props) {
     return (  
         <SkeletonTheme>
             <div className='cartItem'>
-            <div>
-                <img src={item.image} alt={item.description} className='itemImage'></img>
-            </div>
-            <p className='text'>{item.title}</p>
-            <p className='text'> Price: ${item.price}</p>
-            <p className='text'> {props.count}</p>
-            <button onClick={props.addToCart} id={props.id}>+</button>
-            <button onClick={props.removeFromCart} id={props.id}>-</button>
+                <div className='cartImage'>
+                    <img src={item.image} alt={item.description} className='itemImage'></img>
+                </div>
+                <p className='text'>{item.title}</p>
+                <p className='text'> Price: ${item.price}</p>
+                <p className='text'> {props.count}</p>
+                <div>
+                    <button onClick={props.addToCart} id={props.id}>+</button>
+                    <button onClick={props.removeFromCart} id={props.id}>-</button>
+                </div>
             </div>
         </SkeletonTheme> 
         );
