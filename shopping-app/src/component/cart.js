@@ -1,26 +1,55 @@
 import {React, useContext} from 'react'
-import cartContext from './context';
+import {cartContext,cartCountContext} from './context';
 import { listItems } from './data';
 import { SkeletonTheme } from 'react-loading-skeleton';
+import '../App.css';
 
 function CartItem(props) {
     const item = listItems[props.id-1];
     return (  
         <SkeletonTheme>
-            <div className="item">
+            <div className='cartItem'>
             <div>
                 <img src={item.image} alt={item.description} className='itemImage'></img>
             </div>
             <p className='text'>{item.title}</p>
             <p className='text'> Price: ${item.price}</p>
-            <p className='text'> Count: {item.count}</p>
+            <p className='text'> {props.count}</p>
+            <button onClick={props.addToCart} id={props.id}>+</button>
+            <button onClick={props.removeFromCart} id={props.id}>-</button>
             </div>
         </SkeletonTheme> 
         );
 }
 
+
 function Cart() {
     const [cart,setCart] = useContext(cartContext);
+    const [cartCount,setCartCount] = useContext(cartCountContext);
+
+    function addToCart(event) {
+        let newId = event.target.id;
+        const tempCart = [...cart];
+        const AddedItem = tempCart.find(addedItems => newId === addedItems.id);
+        AddedItem['count']+=1;
+        setCart(tempCart);
+        const temp = [...cartCount];
+        temp[0]++;
+        setCartCount(temp);
+    }
+
+    function removeFromCart(event) {
+        let newId = event.target.id;
+        const tempCart = [...cart];
+        const AddedItem = tempCart.find(addedItems => newId === addedItems.id);
+        AddedItem['count']-=1;
+        const updatedCart = tempCart.filter(item => item.count!==0);
+        setCart(updatedCart);
+
+        const temp = [...cartCount];
+        temp[0]--;
+        setCartCount(temp);
+    }
     return (
         <div className="checkout-page">
             <div className="checkout-header">
@@ -31,27 +60,20 @@ function Cart() {
                     <span>Description</span>
                 </div>
                 <div className="header-block">
-                    <span>Quantity</span>
-                </div>
-                <div className="header-block">
                     <span>Price</span>
                 </div>
                 <div className="header-block">
-                    <span>Remove</span>
+                    <span>Quantity</span>
+                </div>
+                <div className="header-block">
+                    <span>Add/Remove</span>
                 </div>
             </div>
-
             {
-                cart.map(item => <CartItem key={item.id} id={item.id} count={item.count} />)
+                cart.map(item => <CartItem key={item.id} id={item.id} count={item.count}
+                    addToCart={addToCart} removeFromCart={removeFromCart}/>)
             }
-            <div className="total">
-                {/* <span>Total= ${total}</span> */}
-            </div>
-            <div className="test-warning">
-                Please use any data for address and name and email, also use <br />
-                card number: 4242 4242 4242 4242, expiry: 02/22, cvv: 123 for dummy payment
-            </div>
-            {/* <StripeButton price={total} /> */}
+
         </div>
     )
 }

@@ -5,18 +5,21 @@ import { SkeletonTheme } from 'react-loading-skeleton';
 import * as Constants from '../constants/constants';
 import 'react-dropdown/style.css'; 
 import Dropdown from 'react-dropdown';
-import cartContext from './context';
+import {cartContext,cartCountContext} from './context';
 
 function ShoppingItem(props){
   return (  
     <SkeletonTheme>
-        <div className="item">
-        <div>
-            <img src={props.url} alt={props.description} className='itemImage'></img>
-        </div>
-        <p className='text'>{props.name}</p>
-        <p className='text'> Price: ${props.price}</p>
-        <button onClick={e => {props.handleAddToCart(e)}} id={props.id}>Add to cart</button>
+        <div className="shoppingItem">
+            <div className='itemImage'>
+                <img src={props.url} alt={props.description}></img>
+            </div>
+            <span className='name-container'>{props.name}</span> <br></br>
+            <span className='price-container'> Price: ${props.price}</span> <br></br>
+            <div className="ratings">
+                <span>Rating: {props.rating.rate}{"("}{props.rating.count}{")"}</span>
+            </div>
+            <button onClick={e => {props.handleAddToCart(e)}} id={props.id}>Add to cart</button>
         </div>
     </SkeletonTheme> 
     );
@@ -30,27 +33,29 @@ function Home (){
     const [maxPrice,setMaxPrice] = useState(Constants.DEFAULT_MAX_PRICE);
     const [sortParam,setSortParam] = useState(Constants.DEFAULT_SORT);
     const [cart, setCart] = useContext(cartContext);
+    const [cartCount, setCartCount] = useContext(cartCountContext);
     // setCart();
-    const categories = [...new Set(items.map(function(item) { return item.category; }))];
+    const categories = [...new Set(listItems.map(function(item) { return item.category; }))];
     categories.sort();
     categories.unshift(Constants.ALL_CATEGORIES);
 
     useEffect( () => {
         let temp = [...listItems];
-        if(category!==Constants.ALL_CATEGORIES && (minPrice<=maxPrice && maxPrice!==0)){
-            temp = temp.filter( (item) => {
-                return item.category===category && minPrice<=item.price && maxPrice>=item.price;
-            });
-        }
-        else if(category!==Constants.ALL_CATEGORIES){
+
+        if(category!==Constants.ALL_CATEGORIES){
             temp = temp.filter( (item) => {
                 return item.category===category;
             });
         }
-        else if(minPrice<=maxPrice && maxPrice!==0){
-            console.log("HI");
+        //Min and Max Price
+        if(minPrice>0){
             temp = temp.filter( (item) => {
-                return minPrice<=item.price && maxPrice>=item.price;
+                return item.price>=minPrice;
+            });
+        }
+        if(maxPrice>0){
+            temp = temp.filter( (item) => {
+                return item.price<=maxPrice;
             });
         }
         //sorting array
@@ -74,6 +79,11 @@ function Home (){
                 return b.price - a.price;
             });
         }
+        else if(sortParam===Constants.sortBy[4]){
+            temp.sort((a,b) => {
+                return b.rating.rate - a.rating.rate;
+            });
+        }
         setItems(temp);
         // console.log(temp);
     },[category,minPrice,maxPrice,sortParam]);
@@ -82,16 +92,18 @@ function Home (){
         setCategory(e.value);
     }
     const handleMinPriceChange = (e) => {
-        if(minPrice<0){
+        let val = parseFloat(e.target.value)
+        if(val<=0){
             return;
         }
-        setMinPrice(e.value);
+        setMinPrice(val);
     }
     const handleMaxPriceChange = (e) => {
-        if(maxPrice<0){
+        let val = parseFloat(e.target.value)
+        if(val<=0){
             return;
         }
-        setMaxPrice(e.value);
+        setMaxPrice(val);
     }
 
     const handleSortChange = (e) => {
@@ -104,29 +116,23 @@ function Home (){
         }
         let newId = event.target.id;
         // console.log(event);
-        if(cart.length==0){
-            const addedItems = {
-                'id' : newId,
-                'count' : 1
-            }
-            const newCart = [...cart, addedItems];
-            setCart(newCart);         
-        }
-        const checkAlreadyAdded = cart.find(addedItems => newId === addedItems.id);
+        const tempCart = [...cart];
+        const checkAlreadyAdded = tempCart.find(item => newId === item.id);
         if(!checkAlreadyAdded){
-            const addedItems = {
+            const newItems = {
                 'id' : newId,
                 'count' : 1
             }
-            const newCart = [...cart, addedItems];
+            const newCart = [...cart, newItems];
             setCart(newCart);
         }
         else{
             checkAlreadyAdded['count']+=1;
-            const updatedCart = [...cart];
-            setCart(updatedCart);
+            setCart(tempCart);
         }
-        console.log(cart);
+        const temp = [...cartCount];
+        temp[0]++;
+        setCartCount(temp);
     }
 
     const categoriesFilterList = [];
@@ -139,15 +145,22 @@ function Home (){
     return (
     <div className='home'>
         <div className='filters'>
-            <Dropdown classname='dropDown sortFilter' options={Constants.sortBy} onChange={(e) => handleSortChange(e)} value={Constants.DEFAULT_SORT}/>
-            <Dropdown classname='dropDown sortFilter' options={categories} onChange={(e) => handleCategoryChange(e)} value={Constants.ALL_CATEGORIES}/>
-            {/* <Select options={categoriesFilterList} /> */}
-            <label>Min. Price<input type="number" placeholder='0' onChange={(e) => handleMinPriceChange(e)}></input></label>
-            <label>Max. Price<input type="number" placeholder='0' onChange={(e) => handleMaxPriceChange(e)}></input></label>
+            <div>
+                <Dropdown classname='dropDown sortFilter' options={Constants.sortBy} onChange={(e) => handleSortChange(e)} value={Constants.DEFAULT_SORT}/>
+            </div>
+            <div>
+               <Dropdown classname='dropDown sortFilter' options={categories} onChange={(e) => handleCategoryChange(e)} value={categories[0]}/>
+            </div>
+            <div>
+                <label>Min. Price<input type="number" placeholder='0' onChange={(e) => handleMinPriceChange(e)}></input></label>
+            </div>
+            <div>
+                <label>Max. Price<input type="number" placeholder='0' onChange={(e) => handleMaxPriceChange(e)}></input></label>
+            </div>
         </div>
         <div className='List'>
             {items.map( item => <ShoppingItem key={item.id} id = {item.id} name={item.title} price={item.price} 
-                url={item.image} alt={item.description} handleAddToCart= {handleAddToCart}/>)}
+                url={item.image} alt={item.description} rating= {item.rating}handleAddToCart= {handleAddToCart}/>)}
         </div>
     </div>
     );
