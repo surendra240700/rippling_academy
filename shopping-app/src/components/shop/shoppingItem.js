@@ -28,7 +28,7 @@ function ShoppingItem(props) {
             }}
             id={props.id}
           >
-            <i class="fa fa-cart-plus" aria-hidden="true"></i>
+            <i className="fa fa-cart-plus" aria-hidden="true"></i>
             Add to cart
           </button>
         </div>

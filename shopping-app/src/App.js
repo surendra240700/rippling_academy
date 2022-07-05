@@ -28,7 +28,7 @@ function App() {
                 <li className="cartIcon">
                   <Link to="/cart">
                     <i
-                      class="fa fa-cart-arrow-down"
+                      className="fa fa-cart-arrow-down"
                       aria-hidden="true"
                     ></i>
                     <sup>{cartCount[0]}</sup>
