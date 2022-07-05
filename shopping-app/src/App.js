@@ -9,6 +9,7 @@ import Shop from './components/shop/shop';
 import Cart from './components/cart/cart';
 import { cartContext, cartCountContext } from './components/context';
 import './App.css';
+import './font-awesome-4.7.0/css/font-awesome.min.css';
 
 function App() {
   const cart = useState([]);
@@ -26,7 +27,11 @@ function App() {
                 </li>
                 <li className="cartIcon">
                   <Link to="/cart">
-                    cart<sup>{cartCount[0]}</sup>
+                    <i
+                      class="fa fa-cart-arrow-down"
+                      aria-hidden="true"
+                    ></i>
+                    <sup>{cartCount[0]}</sup>
                   </Link>
                 </li>
               </ul>

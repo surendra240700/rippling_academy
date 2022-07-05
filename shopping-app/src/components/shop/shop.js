@@ -8,7 +8,7 @@ import './shopping.css';
 
 const categories = [
   ...new Set(
-    listItems.map(function(item) {
+    listItems.map(function (item) {
       return item.category;
     })
   ),
@@ -17,7 +17,7 @@ categories.sort();
 categories.unshift(Constants.ALL_CATEGORIES);
 
 const categoriesFilterList = [];
-categories.forEach(function(cat) {
+categories.forEach(function (cat) {
   let tempObj = {};
   tempObj.label = cat;
   tempObj.value = cat;
@@ -26,11 +26,11 @@ categories.forEach(function(cat) {
 
 const filterStyle = {
   display: 'flex',
-  marginBottom: '50px',
   justifyContent: 'space-around',
+  marginBottom: '50px',
 };
 const sortFilterList = [];
-Constants.sortBy.forEach(function(sortBy) {
+Constants.sortBy.forEach(function (sortBy) {
   let tempObj = {};
   tempObj.label = sortBy;
   tempObj.value = sortBy;
@@ -105,10 +105,10 @@ function Shop() {
     if (!event.isTrusted) return;
     let minVal = parseFloat(event.target[0].value);
     let maxVal = parseFloat(event.target[1].value);
-    if (minVal > 0) {
+    if (minVal >= 0) {
       setMinPrice(minVal);
     }
-    if (maxVal > 0) {
+    if (maxVal >= 0) {
       setMaxPrice(maxVal);
     }
   };
