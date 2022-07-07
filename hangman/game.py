@@ -32,6 +32,7 @@ class Hangman:
         self.dashed_word: List = []
         self.chances_left: int = CHANCES_LEFT
         self.hints_left: int = HINTS_LEFT
+        self.guessed_alphabets: List[bool] = []
 
     def welcome(self) -> None:
         print(">>>>>", "WELCOME TO HANGMAN")
@@ -57,22 +58,47 @@ class Hangman:
             return
 
         while(True):
-            ind: int = random.randint(0, len(self.dashed_word))
+            ind: int = random.randint(0, len(self.dashed_word)-1)
             if self.dashed_word[ind] == '-':
                 self.dashed_word[ind] = self.curr_word[ind]
                 break
         self.hints_left -= 1
         return
 
+    def update(self, inp_letter: str) -> None:
+
+        if(len(inp_letter) != INPUT_LENGTH):
+            print("Enter only {:d} character".format(INPUT_LENGTH))
+            return
+        # index of the alphabet entered [A: 0,B: 1 ....]
+        alpha: int = ord(inp_letter) - ord('A')
+
+        if(alpha < 0 or alpha >= NO_ALPHABETS):
+            print("Enter only alphabets(A-Z)")
+            return
+
+        if(self.guessed_alphabets[alpha]):
+            print(inp_letter, "has already been guessed")
+            return
+
+        self.guessed_alphabets[alpha] = True
+
+        if(inp_letter in self.curr_word):
+            for i, x in enumerate(self.curr_word):
+                if x == inp_letter:
+                    self.dashed_word[i] = inp_letter
+        else:
+            self.chances_left -= 1
+
     def game_logic(self) -> None:
 
         self.curr_word = self.word_generator.get_word().upper()
         word_len: int = len(self.curr_word)
         self.dashed_word = ['-'] * word_len
-        guessed_alphabets = [False] * NO_ALPHABETS
         game_over = False
         self.chances_left = CHANCES_LEFT
         self.hints_left = HINTS_LEFT
+        self.guessed_alphabets: List[bool] = [False] * 26
 
         while(not game_over):
 
@@ -82,29 +108,10 @@ class Hangman:
             prompt: str = ">>>>> Guess your letter: "
             inp_letter = input(prompt).upper()
 
-            if(len(inp_letter) > INPUT_LENGTH):
-                print("Enter only %d character", {INPUT_LENGTH})
-                continue
-
             if(inp_letter == '0'):
                 self.hint()
                 continue
-            if(ord(inp_letter) - ord('A') < 0 or ord(inp_letter) - ord('A') >= NO_ALPHABETS):
-                print("Enter only alphabets(A-Z)")
-                continue
-
-            if(guessed_alphabets[ord(inp_letter[0]) - ord('A')]):
-                print(inp_letter, "has already been guessed")
-                continue
-
-            guessed_alphabets[ord(inp_letter[0]) - ord('A')] = True
-
-            if(inp_letter in self.curr_word):
-                for i, x in enumerate(self.curr_word):
-                    if x == inp_letter:
-                        self.dashed_word[i] = inp_letter
-            else:
-                self.chances_left -= 1
+            self.update(inp_letter)
             game_over = self.check_game_over()
 
     def start(self):
