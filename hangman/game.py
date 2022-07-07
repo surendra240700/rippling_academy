@@ -1,5 +1,5 @@
 from ctypes.wintypes import CHAR
-import requests
+from requests import get
 import random
 from typing import List
 
@@ -13,7 +13,7 @@ class WordGenerator:
         self.words: List[str] = []
 
     def get_data(self) -> None:
-        data: str = requests.get(self.api).text
+        data: str = get(self.api).text
         self.words = data.split()
 
     def get_word(self) -> str:
@@ -22,7 +22,7 @@ class WordGenerator:
 
 
 class Hangman:
-    def __init__(self, word_generator) -> None:
+    def __init__(self, word_generator: WordGenerator) -> None:
         self.word_generator: WordGenerator = word_generator
         self.curr_word: str = ''
         self.dashed_word: List = []
@@ -92,7 +92,7 @@ class Hangman:
         while(not end_game):
             self.game_logic()
             prompt: str = ">>>>> PRESS Q to End Game or Any Key to continue"
-            inp = input(prompt)
+            inp: str = input(prompt)
             if(inp == 'Q' or inp == 'q'):
                 end_game = True
 
