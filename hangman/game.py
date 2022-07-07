@@ -48,11 +48,14 @@ class Hangman:
             return True
 
     def game_logic(self) -> None:
+
         self.curr_word = self.word_generator.get_word().upper()
         word_len: int = len(self.curr_word)
         self.dashed_word = ['-'] * word_len
         guessed_alphabets = [False] * 26
         game_over = False
+        self.chances_left = CHANCES_LEFT
+
         while(not game_over):
             self.print_word()
             prompt: str = ">>>>> Guess your letter: "
@@ -84,10 +87,16 @@ class Hangman:
         # initialize game
         self.welcome()
         self.word_generator.get_data()
-
+        end_game: bool = False
         # Game
+        while(not end_game):
+            self.game_logic()
+            prompt: str = ">>>>> PRESS Q to End Game or Any Key to continue"
+            inp = input(prompt)
+            if(inp == 'Q' or inp == 'q'):
+                end_game = True
 
-        self.game_logic()
+        print(">>>>> SEE YOU LATER!!!!")
 
 
 word_generator = WordGenerator()
