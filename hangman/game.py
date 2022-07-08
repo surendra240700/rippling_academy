@@ -1,8 +1,8 @@
 from operator import truediv
 from typing import List
-from wordGenerator import WordGenerator
+from word_generator import WordGenerator
 from constants import *
-from Hangman import Hangman
+from hangman import Hangman
 
 
 class Game:

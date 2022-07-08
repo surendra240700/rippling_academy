@@ -1,6 +1,6 @@
 import unittest
 from typing import List
-from Hangman import Hangman
+from hangman import Hangman
 from game import Game
 from constants import *
 

@@ -1,7 +1,7 @@
 from operator import truediv
 import random
 from typing import List
-from wordGenerator import WordGenerator
+from word_generator import WordGenerator
 from constants import *
 
 
