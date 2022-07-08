@@ -9,6 +9,7 @@ HINTS_LEFT: int = 1
 NO_ALPHABETS: int = 26
 INPUT_LENGTH: int = 1
 SOWPODS: str = 'http://norvig.com/ngrams/sowpods.txt'
+UNGUESSED_CHAR: str = '_'
 
 
 class WordGenerator:
@@ -38,12 +39,13 @@ class Hangman:
         print(">>>>>", "WELCOME TO HANGMAN")
 
     def print_word(self) -> None:
+        print("\n        ", end='')
         for i in self.dashed_word:
-            print(i, end='')
-        print()
+            print(i, end=' ')
+        print('\n')
 
     def check_game_over(self) -> bool:
-        if('-' not in self.dashed_word):
+        if(UNGUESSED_CHAR not in self.dashed_word):
             print("YOU HAVE WON!!! The word is", self.curr_word)
             return True
         elif(self.chances_left > 0):
@@ -102,7 +104,7 @@ class Hangman:
 
         self.curr_word = self.word_generator.get_word().upper()
         word_len: int = len(self.curr_word)
-        self.dashed_word = ['-'] * word_len
+        self.dashed_word = [UNGUESSED_CHAR] * word_len
         game_over = False
         self.chances_left = CHANCES_LEFT
         self.hints_left = HINTS_LEFT
