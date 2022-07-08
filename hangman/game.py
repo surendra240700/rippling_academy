@@ -10,7 +10,6 @@ class Game:
         self.word_generator = WordGenerator(SOWPODS)
         self.word_generator.get_data()
         self.hangman = None
-        self.start_game()
 
     def print_word(self) -> None:
         print("\n        ", end='')
@@ -27,6 +26,7 @@ class Game:
         return inp_letter
 
     def check_input(self, inp: str) -> bool:
+        inp = inp.upper()
         if(len(inp) != INPUT_LENGTH):
             print("Enter only {:d} character".format(INPUT_LENGTH))
             return False
@@ -56,19 +56,19 @@ class Game:
 
     def start_game(self):
         word: str = self.word_generator.get_word()
-        self.hangman = Hangman(word)
+        self.hangman = Hangman(word, HINTS_LEFT, CHANCES_LEFT)
 
         while(not self.hangman.game_over):
             inp = self.get_input()
             is_hint: bool = self.check_hint(inp)
 
             if(is_hint):
-                self.hangman.hint()
+                upd: bool = self.hangman.hint()
                 continue
 
             is_valid_input: bool = self.check_input(inp)
             if(is_valid_input):
-                self.hangman.update(inp)
+                upd: bool = self.hangman.update(inp)
 
         inp = self.get_endgame_input()
         end_game: bool = self.check_endgame(inp)
@@ -80,3 +80,4 @@ class Game:
 
 if __name__ == '__main__':
     game = Game()
+    game.start_game()

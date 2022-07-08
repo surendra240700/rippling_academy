@@ -1,3 +1,4 @@
+from operator import truediv
 import random
 from typing import List
 from wordGenerator import WordGenerator
@@ -5,11 +6,11 @@ from constants import *
 
 
 class Hangman:
-    def __init__(self, word: str) -> None:
+    def __init__(self, word: str, hints_left, chances_left) -> None:
         self.curr_word: str = word.upper()
         self.dashed_word: List = [UNGUESSED_CHAR] * len(word)
-        self.chances_left: int = CHANCES_LEFT
-        self.hints_left: int = HINTS_LEFT
+        self.chances_left: int = chances_left
+        self.hints_left: int = hints_left
         self.guessed_alphabets: List[bool] = [False] * 26
         self.game_over = False
 
@@ -17,16 +18,16 @@ class Hangman:
         if(UNGUESSED_CHAR not in self.dashed_word):
             print("YOU HAVE WON!!! The word is", self.curr_word)
             return True
-        elif(self.chances_left > 0):
+        elif(self.chances_left >= 0):
             return False
         else:
             print("GAME OVER!!! The word is", self.curr_word)
             return True
 
-    def hint(self) -> None:
+    def hint(self) -> bool:
         if self.hints_left == 0:
             print(self.hints_left, "Hints left!!!")
-            return
+            return False
 
         while(True):
             ind: int = random.randint(0, len(self.dashed_word)-1)
@@ -34,15 +35,16 @@ class Hangman:
                 self.dashed_word[ind] = self.curr_word[ind]
                 break
         self.hints_left -= 1
-        return
+        return True
 
-    def update(self, inp: str) -> None:
+    def update(self, inp: str) -> bool:
+        inp = inp.upper()
         # index of the alphabet entered [A: 0,B: 1 ,....]
         alpha: int = ord(inp) - ord('A')
 
         if(self.guessed_alphabets[alpha]):
             print(inp, "has already been guessed")
-            return
+            return False
 
         self.guessed_alphabets[alpha] = True
 
@@ -54,3 +56,8 @@ class Hangman:
             self.chances_left -= 1
 
         self.game_over = self.check_game_over()
+
+        if(inp in self.curr_word):
+            return True
+
+        return False
