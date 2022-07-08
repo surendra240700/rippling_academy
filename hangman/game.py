@@ -21,7 +21,7 @@ class WordGenerator:
         self.words = data.split()
 
     def get_word(self) -> str:
-        ind: int = random.randint(0, len(self.words))
+        ind: int = random.randint(0, len(self.words) - 1)
         return self.words[ind]
 
 
@@ -70,7 +70,7 @@ class Hangman:
         if(len(inp_letter) != INPUT_LENGTH):
             print("Enter only {:d} character".format(INPUT_LENGTH))
             return
-        # index of the alphabet entered [A: 0,B: 1 ....]
+        # index of the alphabet entered [A: 0,B: 1 ,....]
         alpha: int = ord(inp_letter) - ord('A')
 
         if(alpha < 0 or alpha >= NO_ALPHABETS):
@@ -90,6 +90,14 @@ class Hangman:
         else:
             self.chances_left -= 1
 
+    def get_input(self) -> str:
+        self.print_word()
+        print(self.chances_left, "Chances Left!!!")
+        print(self.hints_left, "Hints Left!!! (press 0 for hint)")
+        prompt: str = ">>>>> Guess your letter: "
+        inp_letter = input(prompt).upper()
+        return inp_letter
+
     def game_logic(self) -> None:
 
         self.curr_word = self.word_generator.get_word().upper()
@@ -101,35 +109,36 @@ class Hangman:
         self.guessed_alphabets: List[bool] = [False] * 26
 
         while(not game_over):
-
-            self.print_word()
-            print(self.chances_left, "Chances Left!!!")
-            print(self.hints_left, "Hints Left!!! (press 0 for hint)")
-            prompt: str = ">>>>> Guess your letter: "
-            inp_letter = input(prompt).upper()
-
-            if(inp_letter == '0'):
+            inp_letter = self.get_input()
+            if(inp_letter == '0'):  # For hints
                 self.hint()
                 continue
             self.update(inp_letter)
             game_over = self.check_game_over()
+
+    def check_endgame(self) -> bool:
+        end_game: bool = False
+        prompt: str = ">>>>> PRESS Q to End Game or Any Key to continue: "
+        inp: str = input(prompt)
+        if(inp == 'Q' or inp == 'q'):
+            end_game = True
+        return end_game
 
     def start(self):
         # initialize game
         self.welcome()
         self.word_generator.get_data()
         end_game: bool = False
+
         # Game
         while(not end_game):
             self.game_logic()
-            prompt: str = ">>>>> PRESS Q to End Game or Any Key to continue: "
-            inp: str = input(prompt)
-            if(inp == 'Q' or inp == 'q'):
-                end_game = True
+            end_game = self.check_endgame()
 
         print(">>>>> SEE YOU LATER!!!!")
 
 
-word_generator = WordGenerator(SOWPODS)
-game = Hangman(word_generator)
-game.start()
+if __name__ == '__main__':
+    word_generator = WordGenerator(SOWPODS)
+    game = Hangman(word_generator)
+    game.start()
