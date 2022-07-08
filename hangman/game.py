@@ -106,7 +106,7 @@ class Hangman:
         game_over = False
         self.chances_left = CHANCES_LEFT
         self.hints_left = HINTS_LEFT
-        self.guessed_alphabets: List[bool] = [False] * 26
+        self.guessed_alphabets = [False] * 26
 
         while(not game_over):
             inp_letter = self.get_input()
