@@ -8,7 +8,7 @@ from hangman import Hangman
 class Game:
     def __init__(self):
         self.word_generator = WordGenerator(SOWPODS)
-        self.word_generator.get_data()
+        self.word_generator.fetch_data()
         self.hangman = None
 
     def print_word(self) -> None:
@@ -54,7 +54,7 @@ class Game:
             return True
         return False
 
-    def start_game(self):
+    def start_game(self) -> bool:
         word: str = self.word_generator.get_word()
         self.hangman = Hangman(word, HINTS_LEFT, CHANCES_LEFT)
 
@@ -72,12 +72,12 @@ class Game:
 
         inp = self.get_endgame_input()
         end_game: bool = self.check_endgame(inp)
-        if(not end_game):
-            self.start_game()
 
-        return
+        return end_game
 
 
 if __name__ == '__main__':
     game = Game()
-    game.start_game()
+    end_game: bool = False
+    while(not end_game):
+        end_game = game.start_game()

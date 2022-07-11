@@ -8,7 +8,7 @@ class WordGenerator:
         self.api: str = url
         self.words: List[str] = []
 
-    def get_data(self) -> None:
+    def fetch_data(self) -> None:
         data: str = get(self.api).text
         self.words = data.split()
 
