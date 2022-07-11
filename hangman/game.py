@@ -5,9 +5,9 @@ from hangman import Hangman
 
 class GameRunner:
     def __init__(self):
-        self.word_generator = WordGenerator(SOWPODS)
+        self.word_generator: WordGenerator = WordGenerator(SOWPODS)
         self.word_generator.fetch_data()
-        self.hangman = None
+        self.hangman: Hangman = None
 
     def print_word(self) -> None:
         print("\n        ", end='')
