@@ -1,4 +1,3 @@
-from operator import truediv
 from typing import List
 from word_generator import WordGenerator
 from constants import *
