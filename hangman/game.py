@@ -1,4 +1,3 @@
-from typing import List
 from word_generator import WordGenerator
 from constants import *
 from hangman import Hangman
