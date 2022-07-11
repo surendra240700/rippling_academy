@@ -62,13 +62,14 @@ class Game:
             inp = self.get_input()
             is_hint: bool = self.check_hint(inp)
 
+            upd: bool = False
             if(is_hint):
-                upd: bool = self.hangman.hint()
+                upd = self.hangman.hint()
                 continue
 
             is_valid_input: bool = self.check_input(inp)
             if(is_valid_input):
-                upd: bool = self.hangman.update(inp)
+                upd = self.hangman.update(inp)
 
         inp = self.get_endgame_input()
         end_game: bool = self.check_endgame(inp)
