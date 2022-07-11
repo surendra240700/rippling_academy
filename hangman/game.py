@@ -9,6 +9,10 @@ class GameRunner:
         self.word_generator.fetch_data()
         self.hangman: Hangman = None
 
+    def initlaize_game(self):
+        word: str = self.word_generator.get_word()
+        self.hangman = Hangman(word, HINTS_LEFT, CHANCES_LEFT)
+
     def print_word(self) -> None:
         print("\n        ", end='')
         for i in self.hangman.dashed_word:
@@ -53,8 +57,7 @@ class GameRunner:
         return False
 
     def start_game(self) -> bool:
-        word: str = self.word_generator.get_word()
-        self.hangman = Hangman(word, HINTS_LEFT, CHANCES_LEFT)
+        self.initlaize_game()
 
         while(not self.hangman.game_over):
             inp = self.get_input()

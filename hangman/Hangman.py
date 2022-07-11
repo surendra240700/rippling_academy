@@ -27,7 +27,7 @@ class Hangman:
             print(self.hints_left, "Hints left!!!")
             return False
 
-        while(True):
+        while(True):  # randomly choose an index until it has not been guessed
             ind: int = random.randint(0, len(self.dashed_word)-1)
             if self.dashed_word[ind] == UNGUESSED_CHAR:
                 self.dashed_word[ind] = self.curr_word[ind]
@@ -46,7 +46,7 @@ class Hangman:
 
         self.guessed_alphabets[alpha] = True
 
-        if(inp in self.curr_word):
+        if(inp in self.curr_word and not inp in self.dashed_word):
             for i, x in enumerate(self.curr_word):
                 if x == inp:
                     self.dashed_word[i] = inp
