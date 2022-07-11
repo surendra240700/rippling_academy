@@ -1,7 +1,7 @@
 import unittest
 from typing import List
 from hangman import Hangman
-from game import Game
+from game import Game, GameRunner
 from constants import *
 
 
@@ -37,7 +37,7 @@ class HangmanTest(unittest.TestCase):
 
 class GameTest(unittest.TestCase):
     def test_check_endgame(self) -> None:
-        game: Game = Game()
+        game: GameRunner = GameRunner()
         self.assertEqual(game.check_endgame('q'), True)
         self.assertEqual(game.check_endgame('Q'), True)
         self.assertEqual(game.check_endgame('i'), False)
@@ -45,7 +45,7 @@ class GameTest(unittest.TestCase):
         self.assertEqual(game.check_endgame(''), False)
 
     def test_check_hint(self) -> None:
-        game: Game = Game()
+        game: GameRunner = GameRunner()
         self.assertEqual(game.check_hint('0'), True)
         self.assertEqual(game.check_hint('1'), False)
         self.assertEqual(game.check_hint('a'), False)
@@ -53,7 +53,7 @@ class GameTest(unittest.TestCase):
         self.assertEqual(game.check_hint('c'), False)
 
     def test_check_input(self) -> None:
-        game: Game = Game()
+        game: GameRunner = GameRunner()
         self.assertEqual(game.check_input(''), False)
         self.assertEqual(game.check_input('1'), False)
         self.assertEqual(game.check_input('a'), True)

@@ -3,7 +3,7 @@ from constants import *
 from hangman import Hangman
 
 
-class Game:
+class GameRunner:
     def __init__(self):
         self.word_generator = WordGenerator(SOWPODS)
         self.word_generator.fetch_data()
@@ -76,7 +76,7 @@ class Game:
 
 
 if __name__ == '__main__':
-    game = Game()
+    game: GameRunner = GameRunner()
     end_game: bool = False
     while(not end_game):
         end_game = game.start_game()
