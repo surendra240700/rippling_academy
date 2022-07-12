@@ -1,4 +1,4 @@
 import React from 'react';
 
-export const cartContext = React.createContext([], () => {});
-export const cartCountContext = React.createContext([], () => {});
+export const CartContext = React.createContext([], () => {});
+export const CartCountContext = React.createContext([], () => {});

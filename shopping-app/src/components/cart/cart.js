@@ -1,32 +1,32 @@
 import { React, useContext } from 'react';
-import { cartContext, cartCountContext } from '../context';
+import { CartContext, CartCountContext } from '../context';
 import './cart.css';
 import CartItem from './cartitem';
 
 function Cart() {
-  const [cart, setCart] = useContext(cartContext);
-  const [cartCount, setCartCount] = useContext(cartCountContext);
+  const [cart, setCart] = useContext(CartContext);
+  const [cartCount, setCartCount] = useContext(CartCountContext);
 
   function addToCart(event) {
     let newId = event.target.id;
     const tempCart = [...cart];
-    const AddedItem = tempCart.find(
+    const addedItem = tempCart.find(
       (addedItems) => newId === addedItems.id
     );
-    AddedItem['count'] += 1;
+    addedItem['count'] += 1;
     setCart(tempCart);
-    const temp = [...cartCount];
-    temp[0]++;
-    setCartCount(temp);
+    const tempCartCount = [...cartCount];
+    tempCartCount[0]++;
+    setCartCount(tempCartCount);
   }
 
   function removeFromCart(event) {
     let newId = event.target.id;
     const tempCart = [...cart];
-    const AddedItem = tempCart.find(
+    const addedItem = tempCart.find(
       (addedItems) => newId === addedItems.id
     );
-    AddedItem['count'] -= 1;
+    addedItem['count'] -= 1;
     const updatedCart = tempCart.filter((item) => item.count !== 0);
     setCart(updatedCart);
 

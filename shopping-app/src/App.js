@@ -7,7 +7,7 @@ import {
 } from 'react-router-dom';
 import Shop from './components/shop/shop';
 import Cart from './components/cart/cart';
-import { cartContext, cartCountContext } from './components/context';
+import { CartContext, CartCountContext } from './components/context';
 import './App.css';
 import './font-awesome-4.7.0/css/font-awesome.min.css';
 
@@ -17,8 +17,8 @@ function App() {
 
   return (
     <div className="App">
-      <cartContext.Provider value={cart}>
-        <cartCountContext.Provider value={cartCount}>
+      <CartContext.Provider value={cart}>
+        <CartCountContext.Provider value={cartCount}>
           <Router>
             <div className="header">
               <ul className="navbar">
@@ -41,8 +41,8 @@ function App() {
               <Route exact path="/cart" element={<Cart />}></Route>
             </Routes>
           </Router>
-        </cartCountContext.Provider>
-      </cartContext.Provider>
+        </CartCountContext.Provider>
+      </CartContext.Provider>
     </div>
   );
 }

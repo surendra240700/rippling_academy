@@ -2,13 +2,13 @@ import { React, useState, useEffect, useContext } from 'react';
 import { listItems } from '../data';
 import * as Constants from '../constants/constants';
 import Select from 'react-select';
-import { cartContext, cartCountContext } from '../context';
+import { CartContext, CartCountContext } from '../context';
 import ShoppingItem from './shoppingItem';
 import './shopping.css';
 
 const categories = [
   ...new Set(
-    listItems.map(function (item) {
+    listItems.map(function(item) {
       return item.category;
     })
   ),
@@ -17,7 +17,7 @@ categories.sort();
 categories.unshift(Constants.ALL_CATEGORIES);
 
 const categoriesFilterList = [];
-categories.forEach(function (cat) {
+categories.forEach(function(cat) {
   let tempObj = {};
   tempObj.label = cat;
   tempObj.value = cat;
@@ -30,7 +30,7 @@ const filterStyle = {
   marginBottom: '50px',
 };
 const sortFilterList = [];
-Constants.sortBy.forEach(function (sortBy) {
+Constants.SORT_BY.forEach(function(sortBy) {
   let tempObj = {};
   tempObj.label = sortBy;
   tempObj.value = sortBy;
@@ -47,53 +47,53 @@ function Shop() {
     Constants.DEFAULT_MAX_PRICE
   );
   const [sortParam, setSortParam] = useState(Constants.DEFAULT_SORT);
-  const [cart, setCart] = useContext(cartContext);
-  const [cartCount, setCartCount] = useContext(cartCountContext);
+  const [cart, setCart] = useContext(CartContext);
+  const [cartCount, setCartCount] = useContext(CartCountContext);
   // setCart();
 
   useEffect(() => {
-    let temp = [...listItems];
+    let tempListItems = [...listItems];
 
     if (category !== Constants.ALL_CATEGORIES) {
-      temp = temp.filter((item) => {
+      tempListItems = tempListItems.filter((item) => {
         return item.category === category;
       });
     }
     //Min and Max Price
     if (minPrice > 0) {
-      temp = temp.filter((item) => {
+      tempListItems = tempListItems.filter((item) => {
         return item.price >= minPrice;
       });
     }
     if (maxPrice > 0) {
-      temp = temp.filter((item) => {
+      tempListItems = tempListItems.filter((item) => {
         return item.price <= maxPrice;
       });
     }
     //sorting array
-    if (sortParam === Constants.sortBy[0]) {
-      temp.sort((a, b) => {
+    if (sortParam === Constants.SORT_BY[0]) {
+      tempListItems.sort((a, b) => {
         return a.title.localeCompare(b.title);
       });
-    } else if (sortParam === Constants.sortBy[1]) {
-      temp.sort((a, b) => {
+    } else if (sortParam === Constants.SORT_BY[1]) {
+      tempListItems.sort((a, b) => {
         return b.title.localeCompare(a.title);
       });
-    } else if (sortParam === Constants.sortBy[2]) {
-      temp.sort((a, b) => {
+    } else if (sortParam === Constants.SORT_BY[2]) {
+      tempListItems.sort((a, b) => {
         return a.price - b.price;
       });
-    } else if (sortParam === Constants.sortBy[3]) {
-      temp.sort((a, b) => {
+    } else if (sortParam === Constants.SORT_BY[3]) {
+      tempListItems.sort((a, b) => {
         return b.price - a.price;
       });
-    } else if (sortParam === Constants.sortBy[4]) {
-      temp.sort((a, b) => {
+    } else if (sortParam === Constants.SORT_BY[4]) {
+      tempListItems.sort((a, b) => {
         return b.rating.rate - a.rating.rate;
       });
     }
-    setItems(temp);
-    // console.log(temp);
+    setItems(tempListItems);
+    // console.log(tempListItems);
   }, [category, minPrice, maxPrice, sortParam]);
 
   const handleCategoryChange = (e) => {
@@ -176,7 +176,7 @@ function Shop() {
           </form>
         </div>
       </div>
-      <div className="List">
+      <div className="list">
         {items.map((item) => (
           <ShoppingItem
             key={item.id}
