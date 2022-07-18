@@ -18,8 +18,7 @@ class Restaurant(Document):
 class Item(Document):
     name = StringField(max_length=20, required=True)
     description = StringField()
-    item_image = URLField()
+    item_image = StringField()
     is_veg = BooleanField()
     avail_quantity = IntField()
-    avail_times = ListField(StringField())  # Breakfast/Lunch/Dinner
     restaurant_id = ReferenceField(Restaurant, reverse_delete_rule=CASCADE, required=True)
